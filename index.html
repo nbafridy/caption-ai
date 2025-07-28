@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPTION.AI UI</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for styling -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-light bg-light">
+    <div class="container align-items-center d-flex flex-column text-center">
+        <a class="navbar-brand mx-auto" href="#">CAPTION.AI</a>
+        <p>Demonstration of Object Detection in Images and Videos</p>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container main_section py-5">
+
+    <div class="row">
+        <div class="col-md-3">
+            <h5 class="text-muted mb-3 ms-2 fw-bold text-center">GALLERY</h5>
+            <div class="">
+                <div class="gallery-sidebar">
+                    <!-- Placeholder images (replace with actual URLs) -->
+                    <img src="images/Disaster/1.jpg" alt="Gallery Image 1">
+                    <img src="images/Disaster/2.jpg" alt="Gallery Image 1">
+                    <img src="images/Disaster/3.jpg" alt="Gallery Image 1">
+                    <img src="images/Protests/1.jpg" alt="Gallery Image 1">
+                    <img src="images/Protests/2.jpg" alt="Gallery Image 1">
+                    <img src="images/Protests/3.jpg" alt="Gallery Image 1">
+                    <img src="images/Protests/4.jpg" alt="Gallery Image 1">
+                    <img src="images/Strikes/1.jpg" alt="Gallery Image 1">
+
+                    <div class="video">
+                        <video src="images/Disaster/15650838-hd_1920_1080_60fps.mp4"></video>
+                    </div>
+                    <div class="video">
+                        <video src="images/Strikes/5287068-hd_1920_1080_30fps.mp4"></video>
+                    </div>
+                    <div class="video">
+                        <video src="images/Protests/4623604-uhd_3840_2160_24fps.mp4"></video>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+<!--                <div class="col-md-4 justify-content-center d-flex flex-column align-items-center align-items-md-start">-->
+<!--                    <p class="info-box">Use image or video from gallery or upload your own files</p>-->
+<!--                </div>-->
+                <div class="align-items-center col-md-12 d-flex flex-column text-center">
+                    <input type="file" name="file" id="file-upload" accept="image/*" style="display: none;" />
+                    <label for="file-upload" class="text-center mb-2 upload-box flex-column" id="image_preview">
+                        <p class="m-0">Drag And Drop</p>
+                        <p class="m-0">OR</p>
+                        <p class="m-0">Click to upload</p>
+                        <!--                <img id="image_preview" style="height: 150px; width: 200px;display: none"  src="" alt="Image Preview" class="main-image">-->
+                    </label>
+<!--                    <button class="btn upload-btn mb-3" onclick="openFileInput()">Upload Another Image or Video</button>-->
+                </div>
+                <div class="align-items-center col-md-12 d-flex flex-column text-center mb-5 gap-4">
+                    <div class="prompt-buttons d-flex justify-content-center align-content-center flex-wrap gap-3">
+                        <p class="m-0 d-flex justify-content-center align-items-center fw-bold">Quick Prompts:</p>
+                        <button class="btn btn-outline-secondary">Identify Objects</button>
+                        <button class="btn btn-outline-secondary">Identify Security Personnels</button>
+                        <button class="btn btn-outline-secondary">Count the number of People</button>
+                        <button class="btn btn-outline-secondary">Identify any visible supply stockpiles</button>
+                        <button class="btn btn-outline-secondary">Identify Color IDs and Hex Codes</button>
+                    </div>
+                    <div class="input-group mx-5">
+                        <input type="text" class="form-control" placeholder="Enter your prompt here" aria-label="Prompt Input" id="custom-prompt">
+                        <button id="submitBtn" class="btn btn-outline-secondary process-btn" type="button" onclick="processUploads()">Process</button>
+                    </div>
+                </div>
+                <!-- Main Image -->
+                <div class="col-md-5 response_container">
+                    <img id="main_image" src="images/Disaster/1.jpg" alt="Scuba Diver" class="main-image custom_height">
+                    <video id="video_preview" src="" style="display: none;" controls class="main-image video_preview custom_height"></video>
+                </div>
+                <!-- Description Panel -->
+                <div class="col-md-7 response_container">
+                    <div class="description-panel custom_height overflow-auto" id="description_panel">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Prompt Section -->
+<!--    <div class="row mb-4">-->
+<!--        <div class="col-md-4 justify-content-center d-flex flex-column align-items-center align-items-md-start">-->
+<!--            <p class="info-box">Use image or video from gallery or upload your own files</p>-->
+<!--        </div>-->
+<!--        <div class="align-items-center col-md-4 d-flex flex-column text-center">-->
+<!--            <input type="file" name="file" id="file-upload" accept="image/*" style="display: none;" />-->
+<!--            <div class="text-center mb-2 mt-4 upload-box" id="image_preview">-->
+<!--                <p>Drag And Drop</p>-->
+<!--&lt;!&ndash;                <img id="image_preview" style="height: 150px; width: 200px;display: none"  src="" alt="Image Preview" class="main-image">&ndash;&gt;-->
+<!--            </div>-->
+<!--            <button class="btn upload-btn mb-3" onclick="openFileInput()">Upload Another Image or Video</button>-->
+<!--        </div>-->
+<!--        <div class="align-items-center col-md-12 d-flex flex-column text-center">-->
+<!--            <div class="prompt-buttons d-flex justify-content-center align-content-center flex-wrap">-->
+<!--                <p class="m-0 pt-2 fw-bold">Quick Prompts:</p>-->
+<!--                <button class="btn btn-outline-secondary">Identify Objects</button>-->
+<!--                <button class="btn btn-outline-secondary">Identify Security Personnels</button>-->
+<!--                <button class="btn btn-outline-secondary">Count the number of People</button>-->
+<!--                <button class="btn btn-outline-secondary">Identify any visible supply stockpiles</button>-->
+<!--                <button class="btn btn-outline-secondary">Identify Color IDs and Hex Codes</button>-->
+<!--            </div>-->
+<!--            <div class="input-group mt-3 w-50 mx-auto">-->
+<!--                <input type="text" class="form-control" placeholder="Enter your prompt here" aria-label="Prompt Input" id="custom-prompt">-->
+<!--                <button id="submitBtn" class="btn btn-outline-secondary process-btn" type="button" onclick="processUploads()">Process</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="row mb-3">-->
+<!--        &lt;!&ndash; Sidebar Gallery &ndash;&gt;-->
+<!--        <h5 class="text-muted mb-3 ms-2 fw-bold">GALLERY</h5>-->
+<!--        <div class="col-lg-4">-->
+<!--            <div class="custom_height">-->
+<!--                <div class="gallery-sidebar custom_height">-->
+<!--                    &lt;!&ndash; Placeholder images (replace with actual URLs) &ndash;&gt;-->
+<!--                    <img src="images/Disaster/1.jpg" alt="Gallery Image 1">-->
+<!--                    <img src="images/Disaster/2.jpg" alt="Gallery Image 1">-->
+<!--                    <img src="images/Disaster/3.jpg" alt="Gallery Image 1">-->
+
+<!--                    &lt;!&ndash;                <img src="images/Protests/1.jpg" alt="Gallery Image 1">&ndash;&gt;-->
+<!--                    <img src="images/Protests/1.jpg" alt="Gallery Image 1">-->
+<!--                    <img src="images/Protests/2.jpg" alt="Gallery Image 1">-->
+<!--                    <img src="images/Protests/3.jpg" alt="Gallery Image 1">-->
+<!--                    <img src="images/Protests/4.jpg" alt="Gallery Image 1">-->
+
+<!--                    <img src="images/Strikes/1.jpg" alt="Gallery Image 1">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Main Image and Description &ndash;&gt;-->
+<!--        <div class="col-lg-8">-->
+<!--            <div class="row">-->
+<!--                &lt;!&ndash; Main Image &ndash;&gt;-->
+<!--                <div class="col-md-5">-->
+<!--                        <img id="main_image" src="images/Disaster/1.jpg" alt="Scuba Diver" class="main-image custom_height">-->
+<!--                </div>-->
+<!--                &lt;!&ndash; Description Panel &ndash;&gt;-->
+<!--                <div class="col-md-7">-->
+<!--                    <div class="description-panel custom_height overflow-auto" id="description_panel">-->
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+</div>
+
+<!-- Bootstrap 5 JS (for interactivity) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+
+<script>
+    let imagesArray = [
+        {
+            "src": "images/Disaster/1.jpg",
+            "prompt": "Describe this image in detail.",
+            "caption": "Here's a detailed description of the image:\n\n**Overall Impression:**\n\nThe image depicts a dramatic scene of demolition and disaster recovery. A towering pile of rubble dominates the frame, and the sky is a vibrant, stormy gradient of orange, yellow, and blue – suggesting either sunrise or sunset.  A yellow Volvo excavator is positioned near the pile, and a white ambulance is partially visible in the foreground.\n\n**Foreground:**\n\n*   **White Ambulance:** A white Ford ambulance is parked near the left side of the frame. It has a blue stripe along the side and a small logo or emblem on its hood. The van's windows are visible, and a person is visible inside, likely a paramedic or medical personnel.\n*   **Ground:** The ground is covered in loose dirt and debris, contributing to the chaotic and unfinished feel of the scene.\n\n**Midground:**\n\n*   **Rubble Pile:** The most prominent element is a massive, chaotic pile of rubble. It’s composed of a variety of building materials, including large concrete slabs, beams, and smaller pieces of debris. The colors are primarily grey and white, with hints of blue from the sky reflecting on the surfaces.\n*   **Volvo Excavator:** A yellow Volvo excavator is positioned near the right side of the pile. Two figures, presumably operators, are visible on the excavator’s bucket, guiding its movements.\n\n**Background:**\n\n*   **Sky:** The sky is a striking gradient, moving from a deep blue at the top to a vibrant orange and yellow near the horizon. The clouds are dense and layered, adding to the dramatic feel of the scene.\n\n**Atmosphere:**\n\nThe lighting is strong and directional, creating strong shadows and highlighting the textures of the rubble and the metallic surfaces of the excavator. The overall effect is one of urgency, devastation, and the beginning of a long process of recovery. \n\n**Overall, the image feels like a moment caught during a large-scale demolition project or disaster recovery operation.**\n\nIf you would like, you can provide another image for me to describe."        },
+        {
+            "src": "images/Disaster/2.jpg",
+            "prompt": "Describe this image in detail.",
+            "caption": "Here's a detailed description of the image:\\n\\n**Overall Impression:**\\n\\nThe image depicts a devastating scene of destruction, likely a war zone or aftermath of a major event. It’s dominated by smoke, charred vehicles, and a crumbling building, conveying a sense of chaos and devastation. \\n\\n**Foreground:**\\n\\n*   **Vehicles:** Three cars are prominently featured. They are severely damaged, blackened, and partially crushed. The paint is peeling, and metal is twisted and broken.  Their condition signifies the force of whatever event caused the destruction.\\n*   **Debris:** The ground is covered in a thick layer of debris: broken metal, twisted wires, and possibly fragments of the building.\\n*   **Smoke:** Dense, grey smoke billows upward, obscuring the view and contributing to the overall atmosphere of chaos and danger. \\n\\n**Midground:**\\n\\n*   **Building:** A large, multi-story building dominates the scene. It’s heavily damaged with significant portions of the structure collapsed. The exterior is concrete and has significant damage to the facade. The windows are broken.\\n\\n**Background:**\\n\\n*   **Sky:** The sky is overcast and grey, reinforcing the somber mood of the image. \\n\\n**Color Palette:**\\n\\n*   The dominant colors are grey, black, and dark brown – reflecting the destruction and the smoky atmosphere. The broken windows reveal patches of blue sky. There’s a muted, almost monochromatic quality to the scene. \\n\\n**Atmosphere & Mood:**\\n\\nThe image evokes a strong sense of sadness, despair, and destruction. The composition, with its chaotic elements and dark tones, creates a feeling of unease and emphasizes the tragic nature of the scene. \\n\\n**Additional Notes:**\\n\\n*   The lack of human figures adds to the feeling of isolation and emphasizes the scale of the devastation. \\n\\nIf you'd like, send me another image to describe!"
+        },
+        {
+            "src": "images/Disaster/3.jpg",
+            "prompt": "Describe this image in detail.",
+            "caption": "Here's a detailed description of the image:\n\n**Overall Impression:**\n\nThe image depicts a scene of devastation and emergency response. A group of international search and rescue teams are navigating through a heavily damaged urban area, likely following a natural disaster such as an earthquake. The scene is somber and emphasizes the scale of the destruction.\n\n**People:**\n\n*   **Search and Rescue Teams:** The dominant figures in the image are a group of approximately 10-12 international search and rescue personnel, all wearing bright orange high-visibility protective gear. They are primarily clad in orange jumpsuits with reflective yellow accents on the arms and legs.  Several of them are wearing helmets with face masks.\n*   **Leader:** One of the men, walking slightly ahead, is clearly the leader, carrying what appears to be a surveying tool, possibly a measuring device or a handheld scanner.\n*   **Other Personnel:** The rest of the team is comprised of individuals also wearing the protective gear, moving in a line and assessing the damaged area.\n*   **Background Figures:** A few indistinct figures can be seen further in the background, indicating other individuals present at the scene.\n\n**Environment & Damage:**\n\n*   **Ruins:** The team is walking through an area completely devastated by a disaster. The foreground is dominated by the wreckage of buildings - concrete slabs, twisted metal, and debris are scattered everywhere.\n*   **Building Remains:** Partially collapsed buildings are visible in the background, with crumbling concrete and exposed structural elements.\n*   **Streetscape:** The ground is covered in a thick layer of debris, including stones, bricks, and dust, suggesting a significant impact. The scene is a street scene, indicating the disaster likely occurred in an urban area. \n*   **Weather:** The lighting is diffused, suggesting overcast conditions and potentially rain, contributing to the overall mood of the scene.\n\n**Additional Details:**\n\n*   **Logos & Markings:**  The team’s uniforms have logos and markings indicating they are part of an international search and rescue organization. The logo visible on one of the uniforms is “ISAR”.\n*   **Atmosphere:** The image conveys a sense of urgency, seriousness, and the difficult task faced by the rescue teams.\n\nIf you’d like, you can provide more context, such as the location of the event, and I can refine the description further."        },
+        {
+            "src": "images/Disaster/15650838-hd_1920_1080_60fps.mp4",
+            "prompt": "Describe this image in detail.",
+            "caption": "Here’s a detailed description of the scene captured in the provided frames, focusing on the key elements and actions:\\n\\n**Overall Scene:**\\n\\nThe image shows a large-scale debris removal operation in what appears to be a residential area. The dominant feature is a massive pile of rubble and collapsed building materials – primarily concrete, bricks, and other construction elements. The scene is overwhelmingly grey and white due to the preponderance of the debris.\\n\\n**Key Elements:**\\n\\n* **Debris Pile:** The central focus is a huge, chaotic accumulation of rubble.  It’s clearly the result of a significant building collapse. The pile is very uneven, with sections of varying heights and angles.\\n* **Construction Equipment:** Two yellow Volvo excavators are prominently positioned within the debris field. They're actively engaged in moving the rubble, one on the left and one on the right.\\n* **People:** Numerous people are present – a mix of individuals and groups. Some are actively participating in the debris removal, others are observing or assisting. They are wearing various types of clothing.\\n* **Vehicles:** Several vehicles, including trucks and potentially other vehicles, are scattered around the scene.\\n* **Buildings:** In the background, we see the remains of a multi-story building. It's severely damaged, with large sections missing and walls broken.\\n\\n**Action & Dynamics:**\\n\\n* **Excavators:** The Volvo excavators are diligently working to clear the debris. They are digging, scooping, and transporting the rubble to a designated area – likely for disposal.\\n* **Human Activity:** People are interacting with the scene. Some are directing the excavators, others are gathering smaller pieces of debris.  There appears to be some coordination between the people and the machines. \\n* **Movement:** The video shows movement within the scene - the excavators are constantly shifting the debris, and the people are actively involved in the process.\\n\\n**Atmosphere:**\\n\\nThe scene conveys a sense of urgency and effort. It's a complex operation in the aftermath of a disaster. The scale of the debris emphasizes the devastation.\\n\\n**Note:** Without the full video, it’s difficult to determine the exact context of the event (e.g., earthquake, building collapse)."
+        },
+        {
+            "src": "images/Protests/1.jpg",
+            "prompt": "Describe this image in detail.",
+            "caption": "Here's a detailed description of the image:\n\n**Overall Impression:**\n\nThe image is a densely packed, chaotic, and intensely emotional black and white photograph capturing a large crowd of people engaged in a protest or demonstration. The feeling is one of fervent energy, excitement, and potential conflict. \n\n**Composition and People:**\n\n*   **Crowd Density:** The image is dominated by a massive crowd of people, tightly packed together, filling the entire frame. There’s no clear space, emphasizing the intensity of the event.\n*   **Facial Expressions:** The faces are the most striking element. They display a range of emotions:\n    *   Most people have wide, open mouths in expressions of excitement and joy. Some are shouting or cheering, and their eyes are wide with enthusiasm.\n    *   Several individuals are holding up phones, seemingly capturing the moment or potentially livestreaming it.\n    *   Some faces show signs of determination or perhaps worry.\n*   **Diversity:** The crowd appears to be diverse in terms of age and ethnicity.\n\n**Setting and Background:**\n\n*   **Urban Environment:** The setting is an urban environment – likely a street or square – with architectural details visible in the background.\n*   **Building Details:** The buildings behind the crowd are old and ornate, with arches, windows, and some decorative elements. It looks like a historical setting, possibly a city with a rich past. \n*   **Lighting:** The lighting appears to be artificial, likely street lamps or illuminated buildings, which contributes to the dramatic mood of the image. \n\n**Details and Elements:**\n\n*   **Signs/Banners:**  Several people are holding up signs or banners with text on them, though the specific content is not clearly legible due to the density of the crowd.\n*   **Bottles:** A few bottles are visible, presumably water, held by individuals in the crowd.\n\n**Mood and Tone:**\n\nThe image conveys a sense of unrest, possibly a revolutionary or political demonstration. It's a moment of collective action, with individuals unified in their expressions and reactions. It is a moment of heightened emotion and the potential for significant change.\n\n**Technical Aspects:**\n\nThe image is sharp, capturing the details of the faces and the surrounding environment. The black and white conversion enhances the drama and emphasizes the texture and forms within the scene.\n\nWould you like me to focus on any specific aspect of the image, such as the symbolism, the historical context, or the technical elements?"
+        },
+        {
+            "src": "images/Protests/2.jpg",
+            "prompt": "Describe the scene in this image/video, including objects, people, and actions.",
+            "caption": "Here's a description of the scene in the image:\n\n**Overall Impression:**\n\nThe image captures a large, densely packed demonstration taking place in an urban environment, likely a city center. The scene conveys a sense of energetic protest, with a mix of flags and signs reflecting diverse political perspectives. The weather is overcast, contributing to a muted color palette.\n\n**Key Elements:**\n\n*   **Crowd:** A massive crowd of people is tightly packed together, filling the foreground and midground of the image. The faces are mostly obscured due to the density of the crowd and the distance.\n\n*   **Flags & Signs:** A striking feature of the image is the presence of numerous flags and signs. There are prominent Palestinian flags (the black, red, and white color scheme) alongside Turkish flags (with a crescent and star).  Other signs are visible, but their wording is difficult to discern from the distance.\n\n*   **Buildings:** The background is dominated by several tall, modern high-rise buildings, indicating an urban setting – possibly a city center or downtown area. \n\n*   **Street & Signage:** There is a street visible, with a blue street sign, suggesting traffic and urban infrastructure.\n\n*   **Weather:** The sky is overcast and gray, which gives the image a somewhat somber or serious tone.\n\n**Likely Context:**\n\nBased on the flags and signs, the image likely depicts a protest or demonstration involving supporters of the Palestinian cause and/or Turkish supporters. It could be a demonstration related to the Israeli-Palestinian conflict or other political issues. \n\n**In summary,** it's a powerful image portraying a large, politically charged demonstration in an urban environment, conveying a sense of collective action and potentially tension."        },
+        {
+            "src": "images/Protests/3.jpg",
+            "prompt": "Describe this image in detail.",
+            "caption": "Here's a detailed description of the image:\n\n**Overall Impression:**\n\nThe image captures a moment of a protest or demonstration. Several people are gathered together holding signs and engaging in a somewhat confrontational interaction. The background is a large, colorful mural.\n\n**People:**\n\n*   **Figures:** There are at least six people visible in the image. They are diverse in appearance, with varying skin tones and clothing.\n*   **Man in Black:** A man in a black shirt, dark pants, and a black leather jacket is positioned on the left side, engaged in what appears to be a discussion or exchange with another individual.\n*   **Woman in Blue Jeans & Top:** A woman wearing blue jeans and a blue top stands beside him.\n*   **People Holding Signs:** There are three people holding signs. Each of the signs have different text written on them.\n\n**Signs:**\n\n*   The three signs have the following text:\n    *   A pink sign says “Justice 4 ALL”\n    *   A green sign says “Freedom”\n    *   A black sign says “Fight For Freedom”\n\n**Background:**\n\n*   **Mural:** The background is dominated by a large mural. It's a vibrant piece featuring abstract shapes, patterns, and what appears to be graffiti-style lettering. The colors are primarily blue, pink, purple, and white. \n\n**Composition & Atmosphere:**\n\nThe people are tightly grouped, and the camera angle suggests a candid, immediate moment. The background mural adds to the urban feel of the scene. \n\nWould you like me to focus on a particular aspect of the image, such as the signs or the background mural?"        },
+        {
+            "src": "images/Protests/4.jpg",
+            "prompt": " Break down the key objects, actions, and details in this image",
+            "caption": "Here’s a breakdown of the key objects, actions, and details in the image:\n\n**Overall Scene:**\n\n*   **Protest:** The image captures a scene of a protest or demonstration. Multiple people are gathered together, participating in the event.\n\n**People:**\n\n*   **Protesters:** Several individuals, mostly young adults, are actively involved in the protest.  They appear to be emotionally engaged, with some gesturing and shouting.\n*   **Masks:** Most of the protesters are wearing face masks, likely to protect against the spread of COVID-19 or to disguise their identities.\n*   **Facial Expressions:**  The expressions of the people are intense and passionate, indicating strong feelings about the issue.\n\n**Signs and Visual Elements:**\n\n*   **Red, Black, and Green Signs:** The signs are prominently colored with red, black, and green, which are commonly associated with the Palestinian flag and the cause of Palestinian liberation.\n*   **Text on Signs:** The signs display the text: \n    *   \"DON'T NEED TO BE.\n    *   \"JUST NEED TO BE.\n    *   \"ESTINE.\n    *   \"PALESTINE FREE !!!\"\n*   **Red Hand:** One of the signs features a red hand raised in a gesture of defiance or support.\n*   **Background:** The background is a blurred view of trees and foliage, suggesting the protest is taking place outdoors.\n\n\n**Overall Impression:**\n\nThe image conveys a sense of solidarity and activism, focused on supporting Palestine and advocating for its liberation. The use of the Palestinian flag colors and the raised hand add to the message of defiance and resistance.\n\nWould you like me to analyze any specific aspect of the image in more detail, such as the symbolism of the colors, the potential message of the signs, or the historical context of the protest?"        },
+        {
+            "src": "images/Strikes/5287068-hd_1920_1080_30fps.mp4",
+            "prompt": "Describe this video in detail.",
+            "caption": "Okay, here’s a detailed description of the video, broken down into key frames and considering the overall scene.\n" +
+                " \n" +
+                "**Overall Impression:**\n" +
+                " \n" +
+                "The video captures a large, energetic protest taking place in front of a stately, historic building – likely a courthouse or government building. The scene is filled with people holding signs, demonstrating a strong, unified stance. The video has a palpable sense of urgency and a clear call for action.\n" +
+                " \n" +
+                "**Frame-by-Frame Analysis:**\n" +
+                " \n" +
+                "*   **Frame 1 (0:00-0:01):** A wide shot shows a dense crowd of protesters filling the square. Many are wearing face masks, and a handful are holding signs. The building dominates the background.\n" +
+                "*   **Frame 2 (0:01-0:02):** Close-up of a person with a raised fist, holding a green sign. The sign reads, “Will Not Be Served Until Those Who Are Outraged As…” \n" +
+                "*   **Frame 3 (0:02-0:03):** A group of people are raising their signs in the air.\n" +
+                "*   **Frame 4 (0:03-0:04):** Another person in the crowd is holding up a sign.\n" +
+                "*   **Frame 5 (0:04-0:05):** A group of people are holding up signs.\n" +
+                "*   **Frame 6 (0:05-0:06):** A group of people are raising their signs in the air. \n" +
+                "*   **Frame 7 (0:06-0:07):** A group of people are raising their signs in the air. \n" +
+                "*   **Frame 8 (0:07-0:08):** A group of people are raising their signs in the air. \n" +
+                "*   **Frame 9 (0:08-0:09):** A group of people are raising their signs in the air. \n" +
+                "*   **Frame 10 (0:09-0:10):** A group of people are raising their signs in the air.\n" +
+                " \n" +
+                "**Key Observations & Details:**\n" +
+                " \n" +
+                "*   **The Crowd:** The protesters are predominantly Black, suggesting a focus on racial justice or equality issues.\n" +
+                "*   **Signs:** The signs are short and impactful, likely demanding a specific policy change or calling for accountability.\n" +
+                "*   **Facial Expressions:** The expressions of the protesters are focused, determined, and passionate. \n" +
+                "*   **The Building:** The building’s architecture (likely a courthouse) adds to the sense of seriousness and underscores the participants' challenge to established power.\n" +
+                " \n" +
+                "**Overall Message:** The video effectively communicates a scene of sustained, organized protest. It highlights the power of collective action and the determination of a group to voice their concerns.\n" +
+                " \n" +
+                "**Do you want me to delve deeper into a specific aspect of this video, such as:**\n" +
+                " \n" +
+                "*   Analyzing the symbolism of the building?\n" +
+                "*   Speculating on the potential cause of the protest?"
+        },
+        {
+            "src": "images/Strikes/1.jpg",
+            "prompt": "Break down the key objects, actions, and details in this image",
+            "caption": "Here's a breakdown of the key objects, actions, and details in the image:\n\n**1. People & Expressions:**\n\n* **Large Crowd:** The image depicts a large, densely packed crowd of people participating in a protest.\n* **Diverse Group:** The participants are diverse in terms of age, race, and gender.\n* **Expressive Faces:** The most striking feature is the range of expressions – some are shouting, some are grimacing with concern, others are resolute and determined. This communicates passion and emotion surrounding the cause.\n* **Person Shouting:** A woman in a black jacket is prominently positioned at the foreground, mid-shout, clearly conveying the energy and intensity of the protest.\n\n**2. Signs & Slogans:**\n\n* **Dominant Slogan:** The most visible signage reads \"Where's The Funds?\". This is the core message of the protest – questioning government investment.\n* **Other Signs:** Several other signs can be seen, some of which read “Defend The Right To Strike” and “Is this Democracy?” This hints at broader concerns about worker’s rights, democratic governance, and potential restrictions on protest.\n\n**3. Setting & Context:**\n\n* **Location:** The protest is taking place in a grand, historic square, most likely Trafalgar Square in London. The architecture (the National Gallery building and the Nelson Column) provides a powerful backdrop.\n* **Season:** The trees are bare, indicating it's likely winter or early spring.\n* **Traffic Light:**  A prominent traffic light adds to the scene, a symbol of urban life and perhaps a representation of the protesters’ challenges.\n\n\n**4. Overall Impression & Interpretation:**\n\n* **Protest Action:** The image captures a moment of intense public action – a political demonstration.\n* **Political Theme:** The signs strongly suggest the protest is related to workers' rights, potentially a strike, and concerns about government funding or policies.\n* **Social Commentary:** The image likely represents a broader political and social movement, raising questions about priorities, accountability, and the balance between power and citizen voice.\n\n**To give you more targeted information, if you could tell me:**\n\n*   What specific event or campaign is this photo related to?\n*   Are there any other details you'd like me to focus on?"        },
+        {
+            "src": "images/Protests/4623604-uhd_3840_2160_24fps.mp4",
+            "prompt": "Describe this video in detail.",
+            "caption": "\Okay, let's break down this video scene. Here’s a description of what’s happening across the five key frames:\\n\\n**Overall Impression:** The video depicts a tense, nighttime scene likely involving a protest or demonstration. Police officers are positioned in front of a crowd, suggesting a potential confrontation or attempt to control the situation.\\n\\n**Frame-by-Frame Breakdown:**\\n\\n*   **Frame 1:** This frame shows the most concentrated group of police officers. They are in a line, all wearing black tactical gear, with their lights illuminated. Their expressions are serious, and they appear to be observing the crowd.\\n*   **Frame 2:** We see one officer gesturing with his hand, possibly directing attention or attempting communication. The crowd in the background is visible and appears to be comprised of several people holding signs.\\n*   **Frame 3:** The police presence is still dominant. An officer in the background is holding a sign, adding to the visual complexity of the scene.\\n*   **Frame 4:** The police are positioned close to a police vehicle, which is contributing to the tense atmosphere.\\n*   **Frame 5:** A similar view to frame 1, featuring police in tactical gear.\\n\\n**Key Observations:**\\n\\n*   **Tension:** The scene is charged with tension due to the uniformed officers, the dark setting, and the crowd’s presence.\\n*   **Control:** The police are clearly attempting to control the situation, positioning themselves between themselves and the crowd.\\n*   **Protest Context:** The signs held by the crowd indicate that they are likely involved in a protest or demonstration.\\n\\n**If you'd like, you can tell me more about what you're interested in, such as:**\\n\\n*   The specific location of the event.\\n*   The potential cause of the protest.\\n*   Anything else you observe about the scene.\\n"
+        }
+    ];
+
+    $('.gallery-sidebar img').click(function(){
+
+       let image_src = $(this).attr('src');
+       let image_detail = imagesArray.find((image => image.src === image_src));
+
+       $('#main_image').attr('src', image_detail.src);
+
+       let caption  = image_detail.caption;
+       caption  = caption.replaceAll('\\n', '<br>').replaceAll(':**', '</b>').replaceAll('\n', '<br>').replaceAll('\n', '<br>').replaceAll('**', '<b>');
+       $('#description_panel').html(caption);
+       isPresetFile = true;
+       selectedImage = image_src;
+
+        $('#image_preview :not(p)').remove();
+        $('#image_preview p').show();
+
+        $('#main_image').show();
+        $('.video_preview').hide();
+        $('.response_container').show();
+
+    });
+    $('.gallery-sidebar video').click(function(){
+
+       let image_src = $(this).attr('src');
+       let image_detail = imagesArray.find((image => image.src === image_src));
+
+       $('.video_preview').attr('src', image_detail.src);
+
+       let caption  = image_detail.caption;
+       caption  = caption.replaceAll('\\n', '<br>').replaceAll(':**', '</b>').replaceAll('\n', '<br>').replaceAll('\n', '<br>').replaceAll('**', '<b>');
+       $('#description_panel').html(caption);
+       isPresetFile = true;
+       selectedImage = image_src;
+
+        $('#main_image').hide();
+        $('.video_preview').show();
+        $('#image_preview :not(p)').remove();
+        $('#image_preview p').show();
+        $('.response_container').show();
+    });
+
+
+    $(document).ready(function(){
+        //$('.gallery-sidebar img').first().click();
+
+    });
+
+    $('#custom-prompt').on('keydown', async function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            processUploads();
+        }
+    });
+
+    async function processUploads() {
+        var formData = new FormData();
+        var promptValue = $('#custom-prompt').val();
+
+        if (promptValue.trim() === '') {
+            $('#custom-prompt').focus();
+            return 0;
+        } else {
+            formData.append('prompt', promptValue);
+            $('#submitBtn').prop('disabled', true).text('Processing...');
+            $('.upload-btn').prop('disabled', true);
+            $('.prompt-buttons,#image_preview').addClass('no_events');
+        }
+
+        if (!isPresetFile) {
+            formData.append('file', $('#file-upload')[0].files[0]);
+
+        }else if(selectedImage.includes('.mp4')) {
+            file = await srcToFile(selectedImage, 'video.mp4', 'video/mp4');
+            formData.append('file', file);
+        } else {
+            let file = await srcToFile(selectedImage, 'image.jpg', 'image/jpg')
+
+            formData.append('file', file);
+
+        }
+        $.ajax({
+            url: 'https://ea68598b0b76.ngrok-free.app/process-media/',
+            type: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            },
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                $('#submitBtn').prop('disabled', true).text('Processing...');
+                $('.upload-btn').prop('disabled', true);
+            },
+            complete: function () {
+                $('#submitBtn').prop('disabled', false).text('Process');
+                $('.upload-btn').prop('disabled', false);
+            },
+            success: function (response) {
+                if (response.caption) {
+                    let caption = response.caption;
+                    caption = caption.replaceAll('\\n', '<br>').replaceAll(':**', '</b>').replaceAll('\n', '<br>').replaceAll('\n', '<br>').replaceAll('**', '<b>');
+                    $('#description_panel').html(caption);
+                    $('.response_container').show();
+                    if(selectedImage.includes('video/mp4') || selectedImage.includes('.mp4')) {
+                        $('.video_preview').attr('src', selectedImage);
+                        $('#main_image').hide();
+                        $('.video_preview').show();
+                    }else{
+                        $('#main_image').attr('src', selectedImage);
+                        $('#main_image').show();
+                        $('.video_preview').hide();
+                    }
+
+
+                    $('#image_preview :not(p)').remove();
+                    $('#image_preview p').show();
+                    //selectedImage = null;
+                    $('#custom-prompt').val('');
+                    //$("#file-upload").val("");  // Clear file input
+                    $('.prompt-buttons,#image_preview').removeClass('no_events');
+
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error uploading file:', error);
+            }
+        });
+    }
+
+
+    function openFileInput(){
+        $('#file-upload').click();
+    }
+
+
+    let selectedImage = null;
+    let isPresetFile = true;
+    $("#file-upload").change(function(event) {
+        let file = event.target.files[0];
+
+        if (file) {
+            let reader = new FileReader();
+
+            reader.onload = function(e) {
+                handleFiles(event.target.files);
+                selectedImage =  e.target.result;
+                isPresetFile = false;
+            };
+
+            reader.readAsDataURL(file);
+            $('.response_container').hide();
+        }
+    });
+
+    $('.prompt-buttons button').click(function(){
+       let prompt = $(this).html();
+       $('#custom-prompt').val(prompt)
+    });
+
+
+    function srcToFile(src, fileName, mimeType) {
+        return (fetch(src)
+                .then(function (res) {
+                    return res.arrayBuffer();
+                })
+                .then(function (buf) {
+                    return new File([buf], fileName, {type: mimeType});
+                })
+        );
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('file-upload');
+        const uploadBox = document.querySelector('.upload-box');
+        const uploadButton = document.getElementById('upload-btn');
+
+        // Prevent default behaviors for drag and drop events
+        uploadBox.addEventListener('dragover', function(event) {
+            event.preventDefault();
+            uploadBox.classList.add('drag-over');
+        });
+
+        uploadBox.addEventListener('dragenter', function(event) {
+            event.preventDefault();
+            uploadBox.classList.add('drag-over');
+        });
+
+        uploadBox.addEventListener('dragleave', function(event) {
+            event.preventDefault();
+            uploadBox.classList.remove('drag-over');
+        });
+
+        // Handle the file drop
+        uploadBox.addEventListener('drop', function(event) {
+            event.preventDefault();
+            uploadBox.classList.remove('drag-over');
+
+            const files = event.dataTransfer.files;
+
+            if (files.length > 0) {
+                fileInput.files = files;
+                $('.response_container').hide();
+                handleFiles(files);
+            }
+        });
+
+    });
+
+    function handleFiles(files) {
+        const file = files[0]; // Use only the first file
+        const previewContainer = document.getElementById('image_preview');
+        if (file) {
+            const reader = new FileReader();
+            $('#image_preview img').remove();
+            $('#image_preview video').remove();
+            // File preview for images and videos
+            reader.onload = function(e) {
+                const result = e.target.result;
+
+                const fileType = file.type.split('/')[0];
+                selectedImage =result;
+                if (fileType === 'image') {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = result;
+                    imgElement.alt = 'File preview';
+                    imgElement.style.width = '100%'; // Make it fit inside the container
+                    previewContainer.appendChild(imgElement);
+                } else if (fileType === 'video') {
+                    const videoElement = document.createElement('video');
+                    videoElement.src = result;
+                    videoElement.controls = true; // Add video controls (play, pause, etc.)
+                    videoElement.style.width = '100%'; // Make it fit inside the container
+                    previewContainer.appendChild(videoElement);
+                } else {
+                    previewContainer.innerHTML = '<p>File type not supported for preview.</p>';
+                }
+            };
+            isPresetFile = false;
+            $('#image_preview p').hide();
+            reader.readAsDataURL(file); // Read the file as data URL for preview
+        }
+    }
+
+
+</script>
+</body>
+</html>
